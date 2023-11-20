@@ -2,11 +2,12 @@
 PACKAGE_NAME = mypackage
 PACKAGE_FOLDER = $(PACKAGE_NAME)/
 TESTS_FOLDER = ./tests/ # all pytest files are here
-PDOC_TARGET_FOLDER = ./pdoc_output/ # pdoc html files will be placed here
 
-EXAMPLE_NOTEBOOK_FOLDER = ./examples/ # this is where example notebooks are stored
-EXAMPLE_NOTEBOOK_HTML_FOLDER = ./examples_html/ # this is where example notebooks are stored
-EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER = ./examples_md/ # this is where example notebooks are stored
+PDOC_TARGET_FOLDER = ./documentation/pdoc_output/ # pdoc html files will be placed here
+
+EXAMPLE_NOTEBOOK_FOLDER = ./examples/# this is where example notebooks are stored
+EXAMPLE_NOTEBOOK_HTML_FOLDER = ./documentation/examples_html/# this is where example notebooks are stored
+EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER = ./documentation/examples_md/# this is where example notebooks are stored
 
 # examples
 # make install
@@ -84,26 +85,30 @@ deploy: build
 ################################# CREATE DOCUMENTATION ##############################
 
 docs: pdoc example_notebooks
-	git add README.md
+	
 
 pdoc:
+	-mkdir $(PDOC_TARGET_FOLDER)
 	pdoc --docformat google -o $(PDOC_TARGET_FOLDER) $(PACKAGE_FOLDER)
 
 example_notebooks:
+	-mkdir $(EXAMPLE_NOTEBOOK_HTML_FOLDER)
 	jupyter nbconvert --to html $(EXAMPLE_NOTEBOOK_FOLDER)/*.ipynb
 	mv $(EXAMPLE_NOTEBOOK_FOLDER)/*.html $(EXAMPLE_NOTEBOOK_HTML_FOLDER)
-	git add --all $(EXAMPLE_NOTEBOOK_HTML_FOLDER)*.html
 
-	jupyter nbconvert --to html $(EXAMPLE_NOTEBOOK_FOLDER)/*.ipynb
-	mv $(EXAMPLE_NOTEBOOK_FOLDER)/*.html $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)
+	-mkdir $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)
+	jupyter nbconvert --to markdown $(EXAMPLE_NOTEBOOK_FOLDER)/*.ipynb
+	mv $(EXAMPLE_NOTEBOOK_FOLDER)/*.md $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)
 	
 add_docs:
-	git add --all $(PDOC_TARGET_FOLDER)*.html
-	git add --all $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)*.html
+	git add --all $(PDOC_TARGET_FOLDER)
+	git add --all $(EXAMPLE_NOTEBOOK_HTML_FOLDER)
+	git add --all $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)
 
 clean_docs:
-	-rm $(PDOC_TARGET_FOLDER)*.html
-	-rm $(EXAMPLE_NOTEBOOK_HTML_FOLDER)*.html
+	-rm -r $(PDOC_TARGET_FOLDER)
+	-rm -r $(EXAMPLE_NOTEBOOK_HTML_FOLDER)
+	-rm -r $(EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER)
 
 ######################################## RUN TESTS ########################################
 
