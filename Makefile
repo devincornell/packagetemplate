@@ -1,13 +1,14 @@
 
 PACKAGE_NAME = mypackage
 PACKAGE_FOLDER = $(PACKAGE_NAME)/
-TESTS_FOLDER = ./tests/ # all pytest files are here
 
-PDOC_TARGET_FOLDER = ./documentation/pdoc_output/ # pdoc html files will be placed here
+PDOC_TARGET_FOLDER = ./site/api/ # pdoc html files will be placed here
 
 EXAMPLE_NOTEBOOK_FOLDER = ./examples/# this is where example notebooks are stored
-EXAMPLE_NOTEBOOK_HTML_FOLDER = ./documentation/examples_html/# this is where example notebooks are stored
 EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER = ./docs/examples/# this is where example notebooks are stored
+EXAMPLE_NOTEBOOK_HTML_FOLDER = ./site/example_notebooks/# this is where example notebooks are stored
+
+TESTS_FOLDER = ./tests/ # all pytest files are here
 
 # examples
 # make install
@@ -83,7 +84,9 @@ deploy: build
 
 ################################# CREATE DOCUMENTATION ##############################
 
-docs: pdoc example_notebooks
+docs: mkdocs pdoc
+	git add -f --all site/*
+	git add --all docs/*
 
 mkdocs: example_notebooks
 	mkdocs build
