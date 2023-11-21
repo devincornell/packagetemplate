@@ -94,7 +94,7 @@ deploy: build requirements
 docs: mkdocs pdoc requirements
 	git add -f --all site/*
 	git add --all docs/*
-	git add requirements.txt
+	# git add requirements.txt
 
 mkdocs: example_notebooks
 	mkdocs build
@@ -139,17 +139,24 @@ pytest: uninstall
 TMP_TEST_FOLDER = tmp_test_deleteme
 test_examples: uninstall
 	# make temporary testing folder and copy files into it
-	mkdir $(TMP_TEST_FOLDER)
+	-mkdir $(TMP_TEST_FOLDER)
 	cp $(EXAMPLE_NOTEBOOK_FOLDER)/*.ipynb $(TMP_TEST_FOLDER)
 	-cp $(EXAMPLE_NOTEBOOK_FOLDER)/*.py $(TMP_TEST_FOLDER)
 	
 	# convert notebooks to .py scripts
-	jupyter nbconvert --to script $(TMP_TEST_FOLDER)/*.ipynb
+	jupyter nbconvert --to python $(TMP_TEST_FOLDER)/*.ipynb
 	
 	# execute example files to make sure they work
 
 	# THESE NOTEBOOKS WILL BE TESTED
-	cd $(TMP_TEST_FOLDER); python ex_basics.py
+	# cd $(TMP_TEST_FOLDER); python ex_basics.py
+	# cd $(TMP_TEST_FOLDER); 
+
+	cd $(TMP_TEST_FOLDER); \
+		for FILE in *.py; do \
+			echo "testing $$FILE"; \
+			python $$FILE; \
+		done
 
 clean_tests:
 	# cleanup temp folder

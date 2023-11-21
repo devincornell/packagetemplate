@@ -81,7 +81,6 @@ dill @ file:///work/ci_py311/dill_1676827712960/work
 distributed @ file:///croot/distributed_1686866039819/work
 dnspython==2.4.2
 docstring-to-markdown @ file:///work/ci_py311/docstring-to-markdown_1676851973684/work
-doctable==2.0
 docutils @ file:///work/ci_py311/docutils_1676822773036/work
 entrypoints @ file:///work/ci_py311/entrypoints_1676823319002/work
 et-xmlfile==1.1.0
