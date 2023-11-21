@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-]+","pipeline":["stopWordFilter"]},"docs":[{"location":"","title":"packagetemplate","text":"<p>Basic setup for creating a python package.</p>"},{"location":"examples/my_example/","title":"My Example","text":"<pre><code>import sys\nsys.path.append('..')\nimport mypackage\n</code></pre> <pre><code>mypackage.myfunc()\n</code></pre>"}]}
