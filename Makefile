@@ -23,6 +23,13 @@ TESTS_FOLDER = ./tests/ # all pytest files are here
 # make deploy (actually builds package)
 
 
+requirements:
+	pip freeze > requirements.txt
+	git add requirements.txt
+	
+	pip list > packages.txt
+	git add packages.txt
+
 #################### TO DEPLOY INSTRUCTIONS ###########################
 #make test
 #make clean
@@ -68,7 +75,7 @@ clean_build:
 	-rm -r dist
 	-rm -r $(PACKAGE_NAME).egg-info
 
-deploy: build
+deploy: build requirements
 	# mostly pulled from https://medium.com/@joel.barmettler/how-to-upload-your-python-package-to-pypi-65edc5fe9c56
 	#also this: https://packaging.python.org/tutorials/packaging-projects/
 	
@@ -84,9 +91,10 @@ deploy: build
 
 ################################# CREATE DOCUMENTATION ##############################
 
-docs: mkdocs pdoc
+docs: mkdocs pdoc requirements
 	git add -f --all site/*
 	git add --all docs/*
+	git add requirements.txt
 
 mkdocs: example_notebooks
 	mkdocs build
@@ -120,9 +128,12 @@ clean_docs:
 
 ######################################## RUN TESTS ########################################
 
+test: pytest test_examples clean_tests requirements
+tests: test # alias	
+
 pytest: uninstall
 	# tests from tests folder
-	cd $(TESTS_FOLDER); pytest test_*.py
+	cd $(TESTS_FOLDER); pytest ./*.py
 
 
 TMP_TEST_FOLDER = tmp_test_deleteme
@@ -139,16 +150,10 @@ test_examples: uninstall
 
 	# THESE NOTEBOOKS WILL BE TESTED
 	cd $(TMP_TEST_FOLDER); python ex_basics.py
-	
-
 
 clean_tests:
 	# cleanup temp folder
 	-rm -r $(TMP_TEST_FOLDER)
-
-
-test: pytest test_examples clean_tests
-tests: test # alias	
 	
 	
 ################################ CLEAN ####################################
