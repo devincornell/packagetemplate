@@ -7,7 +7,7 @@ PDOC_TARGET_FOLDER = ./documentation/pdoc_output/ # pdoc html files will be plac
 
 EXAMPLE_NOTEBOOK_FOLDER = ./examples/# this is where example notebooks are stored
 EXAMPLE_NOTEBOOK_HTML_FOLDER = ./documentation/examples_html/# this is where example notebooks are stored
-EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER = ./documentation/examples_md/# this is where example notebooks are stored
+EXAMPLE_NOTEBOOK_MARKDOWN_FOLDER = ./docs/examples/# this is where example notebooks are stored
 
 # examples
 # make install
@@ -81,11 +81,16 @@ deploy: build
 	python -m twine upload dist/*
 	
 
-
 ################################# CREATE DOCUMENTATION ##############################
 
 docs: pdoc example_notebooks
-	
+
+mkdocs: example_notebooks
+	mkdocs build
+	cp README.md docs/index.md
+
+server_mkdocs:
+	mkdocs serve -a localhost:8882
 
 pdoc:
 	-mkdir $(PDOC_TARGET_FOLDER)
