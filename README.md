@@ -1,2 +1,2 @@
 # packagetemplate
-Basic setup for creating a python package.
+Basic setup for creating a Python package. 
